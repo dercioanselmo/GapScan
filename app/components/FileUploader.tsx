@@ -19,6 +19,8 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
 
     const file = acceptedFiles[0] || null;
 
+
+
     return (
         <div className="w-full gradient-border">
             <input {...getInputProps()} />
@@ -27,8 +29,13 @@ const FileUploader = ({ onFileSelect }: FileUploaderProps) => {
                     <img className="size-20" src="/icons/info.svg" alt="upload" />
                 </div>
                 {file ? (
-                    <div>
-
+                    <div className="text-center">
+                        <p className="text-lg text-gray-700 font-medium truncate">
+                            {file.name}
+                        </p>
+                        <p className="text-sm text-gray-500">
+                            {formatSize(file.size)}
+                        </p>
                     </div>
                 ) : (
                     <div className="text-center">
