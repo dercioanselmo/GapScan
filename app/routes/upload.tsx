@@ -41,7 +41,20 @@ const Upload = () => {
         }
         await kv.set(`resume:${ uuid }`, JSON.stringify(data));
         setStatusText("Analyzing . . .")
+        const feedback = await ai.feedback(
+            uploadFile.path,
+            prepareInstructions({jobTitle, jobDescription})
+        )
+        if(!feedback) return setStatusText("Error: Failed to analyze resume");
 
+        const feedbackText = typeof feedback.message.content === 'string'
+        ? feedback.message.content
+            : feedback.message.content[0].text;
+
+        data.feedback = JSON.parse(feedbackText);
+        await kv.set(`resume:${ uuid }`, JSON.stringify(data));
+        setStatusText("Analysis complete, redirecting . . .");
+        console.log(data);
     }
 
     const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
