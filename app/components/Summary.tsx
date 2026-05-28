@@ -8,7 +8,9 @@ const Category = ({ title, score }: { title: string, score: number }) => {
     return (
         <div className="resume-summary">
             <div className="category">
-                <p>{title}</p>
+                <div className="flex flex-raw gap-2 items-center justify-center">
+                    <p className="text-2xl">{title}</p>
+                </div>
             </div>
             <p className="text-2xl">
                 <span className={textColor}></span>/100
