@@ -20,18 +20,18 @@ const Resume = () => {
         const loadResume = async () => {
             if (!id) return;
 
-            const resumeData = await kv.get(`resume:${id}`);   // ← Fixed key
+            const resumeData = await kv.get(`resume:${id}`);
 
-            if (!resumeData?.data) {
+            // kv.get returns the value directly, not wrapped in .data
+            if (!resumeData) {
                 console.error("Resume not found");
                 return;
             }
 
-            const data = JSON.parse(resumeData.data);
+            // Handle both string and object responses
+            const data = typeof resumeData === 'string' ? JSON.parse(resumeData) : resumeData;
 
-            // Load image
             setImageUrl(data.imagePath);
-
             setFeedback(data.feedback);
         }
 
