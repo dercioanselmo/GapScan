@@ -5,7 +5,7 @@ import { usePuterStore } from "~/lib/puter";
 import { useNavigate } from "react-router";
 import { convertPdfToImage } from "~/lib/pdf2img";
 import { generateUUID } from "~/lib/utils";
-import { prepareInstructions } from "../../constants";
+import { AIResponseFormat, prepareInstructions } from "../../constants";
 import { uploadToS3 } from "~/lib/s3";
 
 const Upload = () => {
@@ -56,7 +56,7 @@ const Upload = () => {
             await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
             // AI Call
-            const prompt = prepareInstructions({ jobTitle, jobDescription });
+            const prompt = prepareInstructions({ jobTitle, jobDescription, AIResponseFormat });
             const feedback = await ai.feedback(prompt, uploadedImage.url);
 
             if (!feedback?.message) {
@@ -72,8 +72,12 @@ const Upload = () => {
                 .replace(/```json\s*/g, '')
                 .replace(/```\s*$/g, '')
                 .trim();
+            //console.log('uploadedImage.url:', uploadedImage.url);
 
             data.feedback = JSON.parse(feedbackText);
+
+            //console.log('PARSED FEEDBACK:', data.feedback);
+
             await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
             setStatusText('Analysis complete, redirecting...');

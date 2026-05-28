@@ -40,6 +40,7 @@ const Resume = () => {
             setImageUrl(data.imagePath);
             setResumeUrl(data.resumePath ?? data.pdfPath ?? data.fileUrl ?? '');
             setFeedback(data.feedback);
+            //console.log(data.feedback);
         }
 
         loadResume();
