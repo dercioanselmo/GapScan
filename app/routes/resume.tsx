@@ -12,9 +12,9 @@ export const meta = () =>([
 const Resume = () => {
     const { id } = useParams();
     const { auth, kv } = usePuterStore();
-    const[imageUrl, setImageUrl] = useState('');
-    const[resumeUrl, setResumeUrl] = useState('');
-    const[feedback, setFeedback] = useState<any>(null);
+    const [imageUrl, setImageUrl] = useState('');
+    const [resumeUrl, setResumeUrl] = useState('');
+    const [feedback, setFeedback] = useState<any>(null);
 
     useEffect(() => {
         const loadResume = async () => {
@@ -22,16 +22,15 @@ const Resume = () => {
 
             const resumeData = await kv.get(`resume:${id}`);
 
-            // kv.get returns the value directly, not wrapped in .data
             if (!resumeData) {
                 console.error("Resume not found");
                 return;
             }
 
-            // Handle both string and object responses
             const data = typeof resumeData === 'string' ? JSON.parse(resumeData) : resumeData;
 
             setImageUrl(data.imagePath);
+            setResumeUrl(data.resumePath ?? data.pdfPath ?? data.fileUrl ?? '');
             setFeedback(data.feedback);
         }
 
@@ -51,11 +50,21 @@ const Resume = () => {
                 <section className="feedback-section bg-[url('/images/bg-small.svg')] bg-cover h-[100vh] sticky top-0 flex items-center justify-center">
                     {imageUrl ? (
                         <div className="animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] w-fit">
-                            <img
-                                className="w-full h-full object-contain rounded-2xl"
-                                src={imageUrl}
-                                alt="resume"
-                            />
+                            {resumeUrl ? (
+                                <a href={resumeUrl} target="_blank" rel="noopener noreferrer">
+                                    <img
+                                        className="w-full h-full object-contain rounded-2xl cursor-pointer"
+                                        src={imageUrl}
+                                        alt="resume"
+                                    />
+                                </a>
+                            ) : (
+                                <img
+                                    className="w-full h-full object-contain rounded-2xl"
+                                    src={imageUrl}
+                                    alt="resume"
+                                />
+                            )}
                         </div>
                     ) : (
                         <p>Loading resume image...</p>
