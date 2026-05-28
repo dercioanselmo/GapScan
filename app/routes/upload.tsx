@@ -6,9 +6,10 @@ import {useNavigate} from "react-router";
 import {convertPdfToImage} from "~/lib/pdf2img";
 import {generateUUID} from "~/lib/utils";
 import {prepareInstructions} from "../../constants";
+import { uploadToS3 } from "~/lib/s3";
 
 const Upload = () => {
-    const { auth, isLoading, fs, ai, kv } = usePuterStore();
+    const { auth, isLoading, ai, kv } = usePuterStore();
     const navigate = useNavigate();
     const [isProcessing, setIsProcessing] = useState(false);
     const [statusText, setStatusText] = useState('');
@@ -22,7 +23,7 @@ const Upload = () => {
         setIsProcessing(true);
         setStatusText('Uploading the file...');
 
-        const uploadedFile = await fs.upload([file]);
+        const uploadedFile = await uploadToS3(file);
         if(!uploadedFile) return setStatusText('Error: Failed to upload file');
 
         setStatusText('Converting to image...');
@@ -43,15 +44,15 @@ const Upload = () => {
         }
 
         setStatusText('Uploading the image...');
-        const uploadedImage = await fs.upload([imageFile.file]);
+        const uploadedImage = await uploadToS3(imageFile.file);
         if(!uploadedImage) return setStatusText('Error: Failed to upload image');
 
         setStatusText('Preparing data...');
         const uuid = generateUUID();
         const data = {
             id: uuid,
-            resumePath: uploadedFile.path,
-            imagePath: uploadedImage.path,
+            resumePath: uploadedFile.url,
+            imagePath: uploadedImage.url,
             companyName,
             jobTitle,
             jobDescription,

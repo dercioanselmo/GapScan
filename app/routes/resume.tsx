@@ -11,7 +11,7 @@ export const meta = () =>([
 
 const Resume = () => {
     const { id } = useParams();
-    const { auth, fs, kv } = usePuterStore();
+    const { auth, kv } = usePuterStore();
     const[imageUrl, setImageUrl] = useState('');
     const[resumeUrl, setResumeUrl] = useState('');
     const[feedback, setFeedback] = useState<any>(null);
@@ -30,13 +30,7 @@ const Resume = () => {
             const data = JSON.parse(resumeData.data);
 
             // Load image
-            const imageBlob = await fs.read(data.imagePath);
-            if (imageBlob) {
-                const url = URL.createObjectURL(imageBlob);
-                setImageUrl(url);
-            } else {
-                console.error("Failed to load image blob");
-            }
+            setImageUrl(data.imagePath);
 
             setFeedback(data.feedback);
         }
