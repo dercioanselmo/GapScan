@@ -1,5 +1,6 @@
 import React from 'react'
 import ScoreGauge from "~/components/ScoreGauge";
+import ScoreBadge from "~/components/ScoreBadge";
 
 const Category = ({ title, score }: { title: string, score: number }) => {
     const textColor = score > 70 ? 'text-green-600'
@@ -10,6 +11,7 @@ const Category = ({ title, score }: { title: string, score: number }) => {
             <div className="category">
                 <div className="flex flex-raw gap-2 items-center justify-center">
                     <p className="text-2xl">{title}</p>
+                    <ScoreBadge score={score} />
                 </div>
             </div>
             <p className="text-2xl">
