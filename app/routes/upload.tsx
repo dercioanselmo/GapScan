@@ -72,11 +72,8 @@ const Upload = () => {
                 .replace(/```json\s*/g, '')
                 .replace(/```\s*$/g, '')
                 .trim();
-            //console.log('uploadedImage.url:', uploadedImage.url);
 
             data.feedback = JSON.parse(feedbackText);
-
-            //console.log('PARSED FEEDBACK:', data.feedback);
 
             await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
