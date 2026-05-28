@@ -9,42 +9,41 @@ export const meta = () =>([
     {name: 'description', content: 'Detailed overview of your resume'},
 ])
 
-
 const Resume = () => {
     const { id } = useParams();
-    const { auth, isLoading, fs, kv } = usePuterStore();
+    const { auth, fs, kv } = usePuterStore();
     const[imageUrl, setImageUrl] = useState('');
     const[resumeUrl, setResumeUrl] = useState('');
-    const[feedback, setFeedback] = useState('');
-    const navigate = useNavigate();
+    const[feedback, setFeedback] = useState<any>(null);
 
     useEffect(() => {
         const loadResume = async () => {
-            const resume = await kv.get(`/resume/${id}`);
+            if (!id) return;
 
-            if (!resume) return;
+            const resumeData = await kv.get(`resume:${id}`);   // ← Fixed key
 
-            const data = JSON.parse(resume.data);
+            if (!resumeData?.data) {
+                console.error("Resume not found");
+                return;
+            }
 
-            const resumeBlob = await fs.read(data.resumePath);
-            if (!resumeBlob) return;
+            const data = JSON.parse(resumeData.data);
 
-            const pdfBlob = new Blob([resumeBlob], { type: 'application/pdf' });
-            const resumeUrl = URL.createObjectURL(pdfBlob);
-            setResumeUrl(resumeUrl);
-
+            // Load image
             const imageBlob = await fs.read(data.imagePath);
-            if(!imageBlob) return;
-            const imageUrl = URL.createObjectURL(imageBlob);
-            setImageUrl(imageUrl);
+            if (imageBlob) {
+                const url = URL.createObjectURL(imageBlob);
+                setImageUrl(url);
+            } else {
+                console.error("Failed to load image blob");
+            }
 
             setFeedback(data.feedback);
-            console.log({ imageUrl, resumeUrl, feedback: data.feedback });
-
         }
 
         loadResume();
-    }, []);
+    }, [id]);
+
     return (
         <main className="!pt-0">
             <nav className="resume-nav">
@@ -53,23 +52,24 @@ const Resume = () => {
                     <span className="text-gray-800 text-sm font-semibold">Back to Homepage</span>
                 </Link>
             </nav>
+
             <div className="flex flex-row w-full max-lg:flex-col-reverse">
-                <section className="feedback-section bg-[url('/images/bg-small.svg') bg-cover h-[100vh] sticky top-0 items-center justify-center">
-                    {imageUrl && resumeUrl && (
-                        <div className=" animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] max-wxl:h-fit w-fit">
-                            <a>
-                                <img
-                                    className="w-full h-full object-contain rounded-2x"
-                                    src={imageUrl}
-                                    title="resume"
-                                />
-                            </a>
+                <section className="feedback-section bg-[url('/images/bg-small.svg')] bg-cover h-[100vh] sticky top-0 flex items-center justify-center">
+                    {imageUrl ? (
+                        <div className="animate-in fade-in duration-1000 gradient-border max-sm:m-0 h-[90%] w-fit">
+                            <img
+                                className="w-full h-full object-contain rounded-2xl"
+                                src={imageUrl}
+                                alt="resume"
+                            />
                         </div>
+                    ) : (
+                        <p>Loading resume image...</p>
                     )}
                 </section>
-
             </div>
         </main>
     )
 }
+
 export default Resume
