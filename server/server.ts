@@ -1,8 +1,9 @@
 // server/server.ts
-import "dotenv/config";          // ← Add this at the top
+import "dotenv/config";
 import express from "express";
 import cors from "cors";
 import uploadRouter from "./routes/upload.js";
+import wipeRouter from "./routes/wipe.js";
 
 const app = express();
 const PORT = 5001;
@@ -20,6 +21,7 @@ app.use(express.json());
 app.get("/", (req, res) => res.send("Server is running! ✅"));
 
 app.use("/upload", uploadRouter);
+app.use("/wipe", wipeRouter);
 
 app.listen(PORT, () => {
     console.log(`🚀 Server running on http://localhost:${PORT}`);
