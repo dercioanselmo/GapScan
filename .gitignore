@@ -5,3 +5,26 @@
 # React Router
 /.react-router/
 /build/
+frontend/.react-router
+server/package-lock.json
+
+# Dependencies
+node_modules/
+frontend/node_modules/
+server/node_modules/
+
+# Build output
+build/
+dist/
+frontend/build/
+server/dist/
+
+# React Router
+frontend/.react-router/
+
+# Environment files
+.env
+.env.*
+
+# Logs
+npm-debug.log*
