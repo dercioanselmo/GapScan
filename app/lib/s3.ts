@@ -1,7 +1,6 @@
 
 import { GetObjectCommand } from "@aws-sdk/client-s3";
 import { getSignedUrl as signUrl } from "@aws-sdk/s3-request-presigner";
-import { s3Client } from "./s3Client";
 
 export async function uploadToS3(file: File) {
 
@@ -27,16 +26,3 @@ export async function uploadToS3(file: File) {
     return response.json();
 }
 
-
-export const getSignedUrl = async (key: string, expiresIn = 3600) => {
-    const command = new GetObjectCommand({
-        Bucket: process.env.S3_BUCKET_NAME!,
-        Key: key,
-    });
-
-    const url = await signUrl(s3Client, command, {
-        expiresIn, // seconds (default 1 hour)
-    });
-
-    return url;
-};

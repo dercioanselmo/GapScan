@@ -7,7 +7,7 @@ import { convertPdfToImage } from "~/lib/pdf2img";
 import { generateUUID } from "~/lib/utils";
 import { AIResponseFormat, prepareInstructions } from "../../constants";
 import { uploadToS3 } from "~/lib/s3";
-import { getSignedUrl } from "~/lib/s3";
+import { extractPdfText } from "~/lib/pdf2text";
 
 const Upload = () => {
     const { auth, isLoading, ai, kv } = usePuterStore();
@@ -56,14 +56,15 @@ const Upload = () => {
 
             await kv.set(`resume:${uuid}`, JSON.stringify(data));
 
+            setStatusText('Extracting resume text...');
+
+            const resumeText = await extractPdfText(file);
+
             // AI Call
             const prompt = prepareInstructions({ jobTitle, jobDescription, AIResponseFormat });
 
-            const signedImageUrl = await getSignedUrl(uploadedImage.key);
+            const feedback = await ai.feedback(prompt, resumeText);
 
-            const feedback = await ai.feedback(prompt, signedImageUrl);
-
-            //const feedback = await ai.feedback(prompt, uploadedImage.url);
 
             if (!feedback?.message) {
                 return setStatusText('Error: Failed to analyze resume');
