@@ -171,9 +171,8 @@ gapscan-backend
 ```
 ---
 
-## Next Stage
-Deploy LLAma locally and use it to avoid usage limit 
 
+## Photo Demo:
 
 ![Screenshot1](readme-images/Screenshot1.png)
 
@@ -200,3 +199,7 @@ Deploy LLAma locally and use it to avoid usage limit
 ![Screenshot12](readme-images/Screenshot12.png)
 
 ![Screenshot13](readme-images/Screenshot13.png)
+
+
+## Next Stage
+Deploy LLAma locally and use it to avoid usage limit 
