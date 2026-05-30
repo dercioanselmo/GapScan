@@ -4,7 +4,7 @@
   "type": "module",
   "scripts": {
     "dev": "tsx server.ts",
-    "start": "node dist/server.js"
+    "start": "tsx server.ts"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1055.0",
