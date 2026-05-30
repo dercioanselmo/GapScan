@@ -29,84 +29,34 @@ GapScan consists of two independent applications:
 ---
 
 # Architecture
-
-
+:TODO
 
 ---
 
 # Tech Stack
-
-## Frontend
-
-### Framework
 - React 19
-
-### State Management
-- Zustand
-
-### Authentication
-- Puter Auth
-
-### AI Integration with any model
-- Puter AI. At this case using the puter default gpt-5-nano
-
-Used to analyze resumes and generate structured feedback.
-Analysis includes:
-- ATS score
-- Content quality
-- Resume structure
-- Skills assessment
-- Tone and style evaluation
-
-### PDF Processing
-```text
-pdfjs-dist
-```
-
-### Styling
 - Tailwind CSS
-
-### File Upload
+- Zustand State Management
+- Puter Auth
+- Puter AI for Ai Integration. At this case using the puter default gpt-5-nano
+- pdfjs-dist
 - Dropzone
-
----
-
-## Backend
-
-### Runtime
 - Node.js 20
-
-### Framework
 - Express 5
-
-### AWS SDK
-```text
-@aws-sdk/client-s3
-@aws-sdk/s3-request-presigner
-```
-
-### Amazon S3
-
-Stores:
-- Resume images
-- Uploaded pdf documents
-
+- @aws-sdk/client-s3
+- @aws-sdk/s3-request-presigner
 ---
-
 
 ## Application Wipe Utility
 Developer utility route:
 ```text
 /wipe
 ```
-
 Performs:
 - Resume history cleanup
 - Local storage cleanup
 - S3 object deletion
-
 Useful during development and testing.
-
 ---
 
 # Project Structure
@@ -137,11 +87,9 @@ GapScan
 │
 └── README.md
 ```
-
 ---
 
 # Environment Variables
-
 ## Frontend
 ```bash
 frontend/.env
@@ -149,7 +97,6 @@ frontend/.env
 ```env
 VITE_API_URL=http://localhost:5001
 ```
-
 ---
 
 ## Backend
@@ -163,7 +110,6 @@ AWS_ACCESS_KEY_ID=xxxxxxxx
 AWS_SECRET_ACCESS_KEY=xxxxxxxx
 S3_BUCKET_NAME=resume-storage-xxxxxxxx
 ```
-
 ---
 
 # Local Development
@@ -194,7 +140,6 @@ http://localhost:5173
 ```
 
 ---
-
 # Docker Deployment
 ## Frontend
 Build:
@@ -209,7 +154,6 @@ docker run \
 --env-file .env \
 gapscan-frontend
 ```
-
 ---
 
 ## Backend
@@ -229,3 +173,30 @@ gapscan-backend
 
 ## Next Stage
 Deploy LLAma locally and use it to avoid usage limit 
+
+
+![Screenshot1](readme-images/Screenshot1.png)
+
+![Screenshot2](readme-images/Screenshot2.png)
+
+![Screenshot3](readme-images/Screenshot3.png)
+
+![Screenshot4](readme-images/Screenshot4.png)
+
+![Screenshot5](readme-images/Screenshot5.png)
+
+![Screenshot6](readme-images/Screenshot6.png)
+
+![Screenshot7](readme-images/Screenshot7.png)
+
+![Screenshot8](readme-images/Screenshot8.png)
+
+![Screenshot9](readme-images/Screenshot9.png)
+
+![Screenshot10](readme-images/Screenshot10.png)
+
+![Screenshot11](readme-images/Screenshot11.png)
+
+![Screenshot12](readme-images/Screenshot12.png)
+
+![Screenshot13](readme-images/Screenshot13.png)
