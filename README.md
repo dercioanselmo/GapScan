@@ -11,12 +11,13 @@ GapScan allows candidates to upload resumes, receive AI-generated recommendation
 GapScan consists of two independent applications:
 
 1. **Frontend**
-   - React Router 7
+   - React 19
    - TypeScript
+   - Tailwind CSS
    - Zustand
-   - Puter Authentication
-   - PDF Processing
-   - Resume Management UI
+   - Puter Authentication and Ai Integration (At this case using the puter default gpt-5-nano)
+   - pdfjs-dist - PDF Processing
+   - Dropzone
 
 2. **Backend**
    - Node.js
@@ -25,26 +26,9 @@ GapScan consists of two independent applications:
    - File Upload APIs
    - Signed URL Generation
    - S3 Cleanup APIs
+   - @aws-sdk/client-s3
+   - @aws-sdk/s3-request-presigner
 
----
-
-# Architecture
-:TODO
-
----
-
-# Tech Stack
-- React 19
-- Tailwind CSS
-- Zustand State Management
-- Puter Auth
-- Puter AI for Ai Integration. At this case using the puter default gpt-5-nano
-- pdfjs-dist
-- Dropzone
-- Node.js 20
-- Express 5
-- @aws-sdk/client-s3
-- @aws-sdk/s3-request-presigner
 ---
 
 ## Application Wipe Utility
@@ -142,32 +126,20 @@ http://localhost:5173
 ---
 # Docker Deployment
 ## Frontend
-Build:
+Build and Run:
 ```bash
-docker build -t gapscan-frontend .
-```
-
-Run:
-```bash
-docker run \
--p 3000:3000 \
---env-file .env \
-gapscan-frontend
+docker build -t gapscan:ui .
+docker images
+docker run -d -p 3001:3000 --name gapscan-ui --restart always gapscan:ui
 ```
 ---
 
 ## Backend
-Build:
+Build and Run:
 ```bash
-docker build -t gapscan-backend .
-```
-
-Run:
-```bash
-docker run \
--p 5001:5001 \
---env-file .env \
-gapscan-backend
+docker build -t gapscan:api .
+docker images
+docker run -d -p 3001:3000 --env-file .env --name gapscan-api --restart always gapscan:api
 ```
 ---
 
