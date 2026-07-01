@@ -45,7 +45,7 @@ const Upload = () => {
             const uploadedImage = await uploadToS3(imageFile.file);
             if (!uploadedImage?.url) return setStatusText('Error: Failed to upload image');
 
-            setStatusText('Analyzing with AI...');
+            setStatusText('Analyzing with  AI...');
 
             const uuid = generateUUID();
             const data = {
